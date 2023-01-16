@@ -1,0 +1,79 @@
+import os
+import time
+os.system("cls")
+
+Dataset = ["daiva", "zaki", ["wahyu", "zaki"], "shafa", ["zaki", "aji", "wahyu"], "zaki"]
+x = "zaki"
+#emda = empty data
+emda1 = []
+emda2 = {}
+
+def partition(o, n, e):
+    pivot = o[n]
+    post = n+1
+    for k in range(n+1, e):
+        if o[k] < pivot:
+            o[post], o[k] = o[k], o[post]
+            post += 1
+    o[post-1], o[n] = o[n], o[post-1]
+    return post
+
+def quicksort(t, e, n):
+    if n <= e:
+        return
+    p = partition(t, e, n)
+    quicksort(t, e, p-1)
+    quicksort(t, p, n)
+    return t
+
+def sorting():
+    print("Sebelum diurutkan:\n", Dataset)
+    for a in range(len(Dataset)):
+        if type (Dataset[a]) != str:
+            emda2[a] = Dataset[a]
+        else:
+            emda1.append(Dataset[a])
+            quicksort(emda1, 0, len(emda1))
+    for i in emda2:
+        quicksort(emda2[i], 0, len(emda2[i]))
+        emda1.insert(i, emda2[i])
+    print("\nSetelah diurutkan:\n", emda1)
+
+def fibonacci(p, a, n):
+    search1 = 0
+    search2 = 1
+    fibonacci = search1 + search2
+    while (fibonacci < n):
+        search1 = search2
+        search2 = fibonacci
+        fibonacci = search1 + search2
+    offset = -1
+    while (fibonacci > 1):
+        i = min(offset + search1, n-1)
+        if (p[i] < a):
+            fibonacci = search2
+            search2 = search1
+            search1 = fibonacci - search2
+            offset = i
+        elif (p[i] > a):
+            fibonacci = search1
+            search2 = search2 - search1
+            search1 = fibonacci - search2
+        else:
+            return i
+    if (search2 and p[n-1] == a):
+        return n-1
+    return -1
+    
+def search():
+    print("kata", x, "ditemukan pada =")
+    for a in range(len(emda1)):
+        if type(emda1[a]) == list:
+            kolomdata = fibonacci(emda1[a], x, len(emda1[a]))
+            print(x, "berada di array index ke -",a,"kolom",kolomdata)
+        else:
+            if emda1[a] == x:
+                print(x, "berada di array index ke -",a)
+
+sorting()
+search()
